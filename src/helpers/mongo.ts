@@ -5,7 +5,7 @@ const mongoUri = config.get<string>("mongo.uri");
 
 const Mongo = mongoose.createConnection(mongoUri);
 Mongo.on("connected", () => {
-  console.log("connect to database successfully");
+  console.log("connect to db successfully");
 });
 
 export default Mongo;
