@@ -1,12 +1,14 @@
 import { ApolloServer, gql } from "apollo-server-express";
-import { Application } from "express";
+import { Application, Request } from "express";
 import lodash from "lodash";
+import morgan from "morgan";
 
 import {
   loadGraphql,
   loadGraphqlResolvers,
   loadGraphqlSchemas,
 } from "./autoloader";
+import logger from "./logger";
 
 class GraphqlServer {
   constructor(public app: Application) {}
@@ -49,6 +51,16 @@ class GraphqlServer {
     });
 
     await server.start();
+
+    morgan.token("gql-query", (req: Request) => req.body["query"]);
+    this.app.use(
+      "/graphql",
+      morgan("GRAPHQL :gql-query - :status", {
+        skip: (req) =>
+          lodash.get(req, "body.query", "")["includes"]("IntrospectionQuery"),
+        stream: { write: (msg) => logger.info(msg) },
+      })
+    );
 
     server.applyMiddleware({ app: this.app });
   }

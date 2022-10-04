@@ -1,16 +1,18 @@
 import { json } from "body-parser";
 import cors from "cors";
-import express from "express";
+import express, { Request } from "express";
 import morgan from "morgan";
 
 const expressServer = express();
 
 expressServer.use(json());
 expressServer.use(cors());
+
+morgan.token("req-body", (req: Request) => req.body);
 expressServer.use(
-  morgan(
-    ":date[clf] :method :url :status :res[content-length] - :response-time ms"
-  )
+  morgan(":method :req-body - :status", {
+    skip: (req) => req.originalUrl.endsWith("/graphql"),
+  })
 );
 
 const startExpressServer = () => {
