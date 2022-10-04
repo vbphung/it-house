@@ -1,11 +1,18 @@
 import { ApolloServer, gql } from "apollo-server-express";
 import { Application } from "express";
+import lodash from "lodash";
+
+import {
+  loadGraphql,
+  loadGraphqlResolvers,
+  loadGraphqlSchemas,
+} from "./autoloader";
 
 class GraphqlServer {
   constructor(public app: Application) {}
 
   async start() {
-    const typeDefs = [
+    let typeDefs = [
       gql`
         type Query {
           _empty: String
@@ -19,7 +26,21 @@ class GraphqlServer {
       `,
     ];
 
-    const resolvers = {};
+    let resolvers = {
+      Query: {
+        _empty: () => "empty",
+      },
+    };
+
+    const exportedSchemas = await loadGraphqlSchemas();
+    typeDefs = typeDefs.concat(exportedSchemas);
+
+    const exportedResolvers = await loadGraphqlResolvers();
+    resolvers = lodash.merge(resolvers, exportedResolvers);
+
+    const exportedGraphql = await loadGraphql();
+    typeDefs = typeDefs.concat(exportedGraphql.typeDefs);
+    resolvers = lodash.merge(resolvers, exportedGraphql.resolvers);
 
     const server = new ApolloServer({
       introspection: true,
