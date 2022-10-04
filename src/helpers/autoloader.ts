@@ -3,7 +3,7 @@ import lodash from "lodash";
 
 const loadGraphqlSchemas = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "../modules/**/*.schema.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.schema.ts");
 
   const exports = loader.getResult().exports;
 
@@ -12,7 +12,7 @@ const loadGraphqlSchemas = async () => {
 
 const loadGraphqlResolvers = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "../modules/**/*.resolver.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.resolver.ts");
 
   const exports = loader.getResult().exports;
 
@@ -27,7 +27,7 @@ const loadGraphqlResolvers = async () => {
 
 const loadGraphql = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "../modules/**/*.graphql.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.graphql.ts");
 
   const exports = loader.getResult().exports;
 

@@ -16,6 +16,7 @@ class GraphqlServer {
   async start() {
     let typeDefs = [
       gql`
+        scalar DateTime
         type Query {
           _empty: String
         }
