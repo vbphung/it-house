@@ -1,4 +1,5 @@
 module.exports = {
+  tokenSecret: "TOKEN_SECRET",
   mongo: {
     uri: "MONGO_URI",
   },

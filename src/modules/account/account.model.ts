@@ -9,6 +9,7 @@ enum AccountPlan {
 }
 
 type Account = BaseDocument & {
+  uid?: string;
   name?: string;
   email?: string;
   password?: string;
@@ -17,9 +18,10 @@ type Account = BaseDocument & {
 
 const accountSchema = new mongoose.Schema(
   {
+    uid: { type: String, required: true },
     name: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String },
     plan: { type: String, required: true, enum: Object.values(AccountPlan) },
   },
   {
