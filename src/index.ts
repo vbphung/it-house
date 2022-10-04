@@ -1,5 +1,5 @@
-import GraphqlServer from "./helpers/apollo";
 import expressServer, { startExpressServer } from "./helpers/express";
+import GraphqlServer from "./helpers/graphql/apollo";
 
 startExpressServer();
 

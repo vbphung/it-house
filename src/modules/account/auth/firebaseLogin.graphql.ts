@@ -30,6 +30,7 @@ export default {
                 name: `user${decodedTk.uid}`,
                 email: decodedTk.email,
                 plan: AccountPlan.INDIVIDUAL,
+                loginProvider: "password",
               });
 
               break;
@@ -40,6 +41,7 @@ export default {
                 name: decodedTk["name"]!,
                 email: decodedTk.email,
                 plan: AccountPlan.INDIVIDUAL,
+                loginProvider: "google.com",
               });
 
               break;
@@ -49,7 +51,7 @@ export default {
           }
         }
 
-        const tk = new Token(acc.uid!, acc.plan!);
+        const tk = new Token(acc.uid!, acc.plan!, { scopes: acc.scopes });
 
         return {
           account: acc,

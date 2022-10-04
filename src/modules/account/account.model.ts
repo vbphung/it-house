@@ -14,6 +14,8 @@ type Account = BaseDocument & {
   email?: string;
   password?: string;
   plan?: AccountPlan;
+  loginProvider?: string;
+  scopes?: string[];
 };
 
 const accountSchema = new mongoose.Schema(
@@ -23,6 +25,8 @@ const accountSchema = new mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String },
     plan: { type: String, required: true, enum: Object.values(AccountPlan) },
+    loginProvider: { type: String },
+    scopes: { type: [String] },
   },
   {
     timestamps: true,

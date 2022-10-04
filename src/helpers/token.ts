@@ -23,7 +23,7 @@ class Token {
     );
   }
 
-  decode(token: string) {
+  static decode(token: string) {
     const { _id, plan, ...payload }: any = jwt.verify(
       token,
       config.get("tokenSecret")
