@@ -7,6 +7,10 @@ class CrudService<T> extends BaseService {
     super();
   }
 
+  async findAll() {
+    return await this.model.find({});
+  }
+
   async findById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new Error("invalid id");
