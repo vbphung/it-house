@@ -1,3 +1,5 @@
+import DataLoader from "dataloader";
+import lodash from "lodash";
 import mongoose, { Schema } from "mongoose";
 
 import BaseDocument from "../../bases/baseDoc";
@@ -29,5 +31,17 @@ productSchema.index({ name: "text" });
 
 const ProductModel = Mongo.model<Product>("Product", productSchema);
 
+const ProductLoader = new DataLoader(
+  async (ids) => {
+    const products = await ProductModel.find({ _id: { $in: ids } });
+    const keysById = lodash.keyBy(products, "_id");
+
+    return ids.map((id) => {
+      return lodash.get(keysById, id as string, null);
+    });
+  },
+  { cache: true }
+);
+
 export default ProductModel;
-export { Product };
+export { Product, ProductLoader };

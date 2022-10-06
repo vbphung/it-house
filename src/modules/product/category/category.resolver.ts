@@ -1,5 +1,6 @@
 import Context from "../../../helpers/graphql/context";
-import ProductModel from "../product.model";
+import ProductModel, { ProductLoader } from "../product.model";
+import { Category } from "./category.model";
 import categoryService from "./category.service";
 
 const categoryResolvers = {
@@ -31,9 +32,15 @@ const categoryResolvers = {
     },
   },
   Category: {
-    products: async (root: any, args: any, context: Context) => {
+    products: async (root: Category, args: any, context: Context) => {
       const { productIds } = root;
-      return await ProductModel.find({ _id: { $in: productIds } });
+      if (!productIds) {
+        return [];
+      }
+
+      return await ProductLoader.loadMany(
+        productIds.map((id) => id.toString())
+      );
     },
   },
 };
