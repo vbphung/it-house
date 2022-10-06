@@ -1,8 +1,7 @@
-import DataLoader from "dataloader";
-import lodash from "lodash";
 import mongoose, { Schema } from "mongoose";
 
 import BaseDocument from "../../bases/baseDoc";
+import { getModelDataLoader } from "../../helpers/dataloader";
 import Mongo from "../../helpers/mongo";
 
 type Product = BaseDocument & {
@@ -31,17 +30,7 @@ productSchema.index({ name: "text" });
 
 const ProductModel = Mongo.model<Product>("Product", productSchema);
 
-const ProductLoader = new DataLoader(
-  async (ids) => {
-    const products = await ProductModel.find({ _id: { $in: ids } });
-    const keysById = lodash.keyBy(products, "_id");
-
-    return ids.map((id) => {
-      return lodash.get(keysById, id as string, null);
-    });
-  },
-  { cache: true }
-);
+const ProductLoader = getModelDataLoader(ProductModel);
 
 export default ProductModel;
 export { Product, ProductLoader };

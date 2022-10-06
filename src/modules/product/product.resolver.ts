@@ -1,4 +1,5 @@
 import Context from "../../helpers/graphql/context";
+import { loadOne } from "../../helpers/graphql/resolver";
 import CategoryModel, { CategoryLoader } from "./category/category.model";
 import productService from "./product.service";
 
@@ -43,10 +44,7 @@ const productResolvers = {
     },
   },
   Product: {
-    category: async (root: any, args: any, context: Context) => {
-      const { categoryId } = root;
-      return await CategoryLoader.load(categoryId["toString"]());
-    },
+    category: loadOne(CategoryLoader, "categoryId"),
   },
 };
 
