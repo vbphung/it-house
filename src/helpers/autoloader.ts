@@ -1,6 +1,8 @@
 import { Autoloader } from "autoloader-ts";
 import lodash from "lodash";
 
+import { RouterConfig } from "./apiRouter";
+
 const loadGraphqlSchemas = async () => {
   const loader = await Autoloader.dynamicImport();
   await loader.fromGlob(__dirname + "/../modules/**/*.schema.ts");
@@ -48,4 +50,19 @@ const loadGraphql = async () => {
   );
 };
 
-export { loadGraphqlSchemas, loadGraphqlResolvers, loadGraphql };
+const loadRouters = async () => {
+  const loader = await Autoloader.dynamicImport();
+  await loader.fromGlob(__dirname + "/../modules/**/*.router.ts");
+
+  const exports = loader.getResult().exports;
+
+  return lodash.reduce(
+    exports,
+    (pre, val) => {
+      return pre["concat"](val);
+    },
+    [] as RouterConfig[]
+  );
+};
+
+export { loadGraphqlSchemas, loadGraphqlResolvers, loadGraphql, loadRouters };
