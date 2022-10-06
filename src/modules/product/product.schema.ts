@@ -19,7 +19,7 @@ const productSchema = gql`
     description: String!
     basePrice: Float!
     sellPrice: Float!
-    categoryId: ID!
+    category: Category!
   }
   input CreateProductParams {
     name: String!

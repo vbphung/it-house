@@ -1,4 +1,5 @@
 import Context from "../../helpers/graphql/context";
+import CategoryModel from "./category/category.model";
 import productService from "./product.service";
 
 const productResolvers = {
@@ -8,7 +9,6 @@ const productResolvers = {
     },
     getOneProduct: async (root: any, args: any, context: Context) => {
       const { id } = args;
-
       return await productService.findById(id);
     },
   },
@@ -39,8 +39,13 @@ const productResolvers = {
     },
     deleteProduct: async (root: any, args: any, context: Context) => {
       const { id } = args;
-
       return await productService.delete(id);
+    },
+  },
+  Product: {
+    category: async (root: any, args: any, context: Context) => {
+      const { categoryId } = root;
+      return await CategoryModel.findById(categoryId);
     },
   },
 };
