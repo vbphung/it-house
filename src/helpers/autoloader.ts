@@ -5,7 +5,7 @@ import { RouterConfig } from "./apiRouter";
 
 const loadGraphqlSchemas = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "/../modules/**/*.schema.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.schema.(ts|js)");
 
   const exports = loader.getResult().exports;
 
@@ -14,7 +14,7 @@ const loadGraphqlSchemas = async () => {
 
 const loadGraphqlResolvers = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "/../modules/**/*.resolver.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.resolver.(ts|js)");
 
   const exports = loader.getResult().exports;
 
@@ -29,7 +29,7 @@ const loadGraphqlResolvers = async () => {
 
 const loadGraphql = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "/../modules/**/*.graphql.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.graphql.(ts|js)");
 
   const exports = loader.getResult().exports;
 
@@ -52,7 +52,7 @@ const loadGraphql = async () => {
 
 const loadRouters = async () => {
   const loader = await Autoloader.dynamicImport();
-  await loader.fromGlob(__dirname + "/../modules/**/*.router.ts");
+  await loader.fromGlob(__dirname + "/../modules/**/*.router.(ts|js)");
 
   const exports = loader.getResult().exports;
 
