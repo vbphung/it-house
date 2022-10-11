@@ -17,6 +17,7 @@ type Account = BaseDocument & {
   plan?: AccountPlan;
   loginProvider?: string;
   scopes?: string[];
+  deviceTokens?: string[];
 };
 
 const accountSchema = new mongoose.Schema(
@@ -27,7 +28,8 @@ const accountSchema = new mongoose.Schema(
     password: { type: String },
     plan: { type: String, required: true, enum: Object.values(AccountPlan) },
     loginProvider: { type: String },
-    scopes: { type: [String] },
+    scopes: { type: [String], default: [] },
+    deviceTokens: { type: [String], default: [] },
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-express";
 
+import firebase from "../../../helpers/firebase";
 import Context from "../../../helpers/graphql/context";
 import { AccountLoader } from "../../account/account.model";
 import NotificationModel from "../notification.model";
@@ -31,6 +32,20 @@ const notifyGraphql = {
           title,
           body,
         });
+
+        const deviceTks = acc.deviceTokens!;
+        if (deviceTks.length <= 0) {
+          return "ok";
+        }
+
+        for (const tk in deviceTks) {
+          firebase.messaging().sendToDevice(tk, {
+            notification: {
+              title,
+              body,
+            },
+          });
+        }
 
         return "ok";
       },
