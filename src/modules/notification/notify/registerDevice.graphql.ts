@@ -10,23 +10,25 @@ const registerDeviceGraphql = {
     }
   `,
   resolvers: {
-    registerDevice: async (root: any, args: any, context: Context) => {
-      const { token } = args;
+    Mutation: {
+      registerDevice: async (root: any, args: any, context: Context) => {
+        const { token } = args;
 
-      await Promise.all([
-        AccountModel.findByIdAndUpdate(context.userId, {
-          $addToSet: { deviceTokens: token },
-        }),
-        AccountModel.updateMany(
-          {
-            $ne: { _id: context.userId },
-            deviceTokens: token,
-          },
-          { $pull: { deviceTokens: token } }
-        ),
-      ]);
+        await Promise.all([
+          AccountModel.findByIdAndUpdate(context.userId, {
+            $addToSet: { deviceTokens: token },
+          }),
+          AccountModel.updateMany(
+            {
+              $ne: { _id: context.userId },
+              deviceTokens: token,
+            },
+            { $pull: { deviceTokens: token } }
+          ),
+        ]);
 
-      return "ok";
+        return "ok";
+      },
     },
   },
 };
